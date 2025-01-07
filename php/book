@@ -1,0 +1,124 @@
+<?php
+// Database connection setup
+$servername = "localhost";
+$username = "root";
+$password = "";
+$dbname = "library";
+
+// Create connection
+$conn = new mysqli($servername, $username, $password, $dbname);
+
+// Check connection
+if ($conn->connect_error) {
+    die("Connection failed: " . $conn->connect_error);
+}
+
+// Insert book data into the database if form is submitted
+if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['add_book'])) {
+    $accession_number = $_POST['accession_number'];
+    $title = $_POST['title'];
+    $author = $_POST['author'];
+    $editor = $_POST['editor'];
+    $publisher = $_POST['publisher'];
+
+    // Insert data into the database
+    $sql = "INSERT INTO books (accession_number, title, author, editor, publisher) 
+            VALUES ('$accession_number', '$title', '$author', '$editor', '$publisher')";
+
+    if ($conn->query($sql) === TRUE) {
+        echo "New book added successfully!<br><br>";
+    } else {
+        echo "Error: " . $sql . "<br>" . $conn->error . "<br><br>";
+    }
+}
+
+// Search for books by title if form is submitted
+$search_results = [];
+if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['search_book'])) {
+    $search_title = $_POST['search_title'];
+
+    // Search query
+    $search_sql = "SELECT * FROM books WHERE title LIKE '%$search_title%'";
+    $result = $conn->query($search_sql);
+
+    if ($result->num_rows > 0) {
+        while ($row = $result->fetch_assoc()) {
+            $search_results[] = $row;
+        }
+    } else {
+        echo "No books found matching the title.<br><br>";
+    }
+}
+
+?>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Book Management</title>
+</head>
+<body>
+    <h1>Book Management System</h1>
+
+    <!-- Add Book Form -->
+    <h2>Add Book</h2>
+    <form method="POST" action="book_management.php">
+        <label for="accession_number">Accession Number:</label><br>
+        <input type="number" id="accession_number" name="accession_number" required><br><br>
+        
+        <label for="title">Title:</label><br>
+        <input type="text" id="title" name="title" required><br><br>
+        
+        <label for="author">Author:</label><br>
+        <input type="text" id="author" name="author" required><br><br>
+        
+        <label for="editor">Editor:</label><br>
+        <input type="text" id="editor" name="editor"><br><br>
+        
+        <label for="publisher">Publisher:</label><br>
+        <input type="text" id="publisher" name="publisher" required><br><br>
+        
+        <input type="submit" name="add_book" value="Add Book">
+    </form>
+
+    <hr>
+
+    <!-- Search Book Form -->
+    <h2>Search Book by Title</h2>
+    <form method="POST" action="book_management.php">
+        <label for="search_title">Enter Book Title:</label><br>
+        <input type="text" id="search_title" name="search_title" required><br><br>
+        <input type="submit" name="search_book" value="Search">
+    </form>
+
+    <?php if (isset($search_results) && count($search_results) > 0) : ?>
+        <h2>Search Results:</h2>
+        <table border="1" cellpadding="10" cellspacing="0" style="border-collapse: collapse;">
+            <tr>
+                <th>Accession Number</th>
+                <th>Title</th>
+                <th>Author</th>
+                <th>Editor</th>
+                <th>Publisher</th>
+            </tr>
+            <?php foreach ($search_results as $book) : ?>
+                <tr>
+                    <td><?php echo $book['accession_number']; ?></td>
+                    <td><?php echo $book['title']; ?></td>
+                    <td><?php echo $book['author']; ?></td>
+                    <td><?php echo $book['editor']; ?></td>
+                    <td><?php echo $book['publisher']; ?></td>
+                </tr>
+            <?php endforeach; ?>
+        </table>
+    <?php endif; ?>
+
+</body>
+</html>
+
+<?php
+// Close the database connection
+$conn->close();
+?>
