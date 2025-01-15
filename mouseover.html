@@ -1,0 +1,30 @@
+<html>
+<head>
+<style>
+#hoverContent{
+cursor:pointer;
+width:300px;
+}
+</style>
+</head>
+<body>
+<div id="hoverContent" onmouseover="showContent()" onmouseout="hiddenContent()">
+<p>hover this text</p>
+<div id='newContent'>
+<img src="pic 3.jpg" width="350" height="300">
+<p>this is the new text</p>
+</div>
+</div>
+<script>
+function showContent()
+{
+document.getElementById('newContent').style.display='block';
+}
+function hiddenContent()
+{
+document.getElementById('newContent').style.display='none';
+}
+</script>
+</body>
+</html>
+
