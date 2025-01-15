@@ -1,0 +1,97 @@
+<html>
+<head>
+<title></title>
+</head>
+<body bgcolor="lightblue">
+<center>
+<h1>contact form</h1>
+<form>
+<center>
+<label for="firstname">firstname</label>
+<input type="text" id="firstname" name="firstname"><br><br>
+<label for="lastname">lastname</label>
+<input type="text" id="lastname" name="lastname"><br>
+<label for="address">address</label>
+<textarea id="address" name="address" rows="4" cols="50"></textarea><br>
+<label for="phone">phone</label>
+<input type="tel" id="phone" name="phone">
+<label for="password">password</label>
+<input type="password" id="password" name="password"><br>
+<label for="confirmpassword">confirmpassword</label>
+<input type="password" id="confirmpassword" name="confirmpassword">
+<button type="button"  onclick="validateform()">submit</button>
+</center>
+</form>
+<script >
+function validateform() {
+    var password = document.getElementById('password').value;
+    var confirmPassword = document.getElementById('confirmpassword').value;
+    
+    if (password !== confirmPassword) {
+        alert("Passwords do not match. Please try again.");
+        return false;
+}else{
+alert("form submitted sucesfully");
+    }
+
+    var phone=document.getElementById('phone').value;
+    var phonepattern=/^\d{10}$\;
+    if(phone|| !phonepattern.test(phone)){
+alert("enter valid 10 digit number");
+return false;
+}
+alert("form submitted sucessfully");
+return true;
+}
+
+
+</script>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
