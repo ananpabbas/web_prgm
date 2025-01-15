@@ -1,0 +1,21 @@
+<html>
+<head>
+<style>
+body{
+	font-size:15px;
+	padding:5px;
+	cursor:pointer;
+}
+</style>
+</head>
+<body>
+<button onclick="changecolor()">change backgroundcolor</button>
+<script>
+function changecolor()
+{
+let color='#'+Math.random().toString(16).slice(2,8);
+document.body.style.backgroundColor=color;
+}
+</script>
+</body>
+</html>
